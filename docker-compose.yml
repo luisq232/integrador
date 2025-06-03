@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  client:
+    build: ./Cliente        # Cambié 'Client' por 'Cliente', según tú escribiste antes
+    ports:
+      - "3001:80"
+    restart: unless-stopped
+    depends_on:
+      - server
+    networks:
+      - app-network
+
+  server:
+    build: ./REST_API_3004
+    ports:
+      - "3002:3000"
+    env_file: .env
+    environment:
+      NODE_ENV: development
+      DB_URL: ${DB_URL}
+    restart: unless-stopped
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
